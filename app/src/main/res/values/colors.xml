@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorBannerButton">#ff0000</color>
+    <color name="colorLabCaveLight">#03C1B7</color>
+    <color name="colorLabCave">#03a0bf</color>
+    <color name="colorLabCaveBackground">#038ba6</color>
 </resources>

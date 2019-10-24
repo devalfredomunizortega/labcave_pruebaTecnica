@@ -4,12 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLabCaveBackground"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="336dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:linksClickable="true"
+        android:text="@string/descriptionTextView"
+        android:textColor="@android:color/background_light"
+        android:textColorLink="@android:color/background_light"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/interstitialButton"
+        app:layout_constraintVertical_bias="0.22" />
 
     <ImageView
         android:id="@+id/logoImage"
         android:layout_width="365dp"
         android:layout_height="117dp"
+        android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
@@ -17,6 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.351"
         app:srcCompat="@drawable/logo_lab_cave" />
+
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adBanner"
@@ -31,30 +52,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/interstitialButton"
-        app:layout_constraintVertical_bias="0.163"></com.google.android.gms.ads.AdView>
-
-    <Button
-        android:id="@+id/interstitialButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="68dp"
-        android:layout_marginRight="68dp"
-        android:onClick="onClickAdInterstitial"
-        android:text="@string/interstitialButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.646"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoImage"
-        app:layout_constraintVertical_bias="0.123" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.171"></com.google.android.gms.ads.AdView>
 
     <Button
         android:id="@+id/bannerButton"
+        android:background="@drawable/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickAdBanner"
         android:text="@string/bannerButton"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/interstitialButton"
         app:layout_constraintHorizontal_bias="0.4"
@@ -63,11 +71,28 @@
         app:layout_constraintVertical_bias="0.122" />
 
     <Button
+        android:id="@+id/interstitialButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttons"
+        android:onClick="onClickAdInterstitial"
+        android:text="@string/interstitialButton"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoImage"
+        app:layout_constraintVertical_bias="0.122" />
+
+    <Button
         android:id="@+id/rewardedButton"
+        android:background="@drawable/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClickAdRewarded"
         android:text="@string/rewardedButton"
+        android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.568"

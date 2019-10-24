@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">LAB CAVE</string>
+    <string name="app_name">LAB CAVE | Prueba técnica</string>
+    <string name="descriptionTextView">
+        Desarrollado por:
+        &lt;a href="https://www.linkedin.com/in/alfredo-muñiz-ortega">Alfredo Muñiz Ortega&lt;/a>
+    </string>
     <string name="bannerButton">Banner</string>
     <string name="interstitialButton">Interstitial</string>
     <string name="rewardedButton">Rewarded</string>
