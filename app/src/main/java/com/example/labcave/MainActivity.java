@@ -28,11 +28,16 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener{
 
+    //***********************************************************************************************************************
+    //DECLARATIONS
+    //***********************************************************************************************************************
+
     //Buttons
     private Button bannerButton;
     private Button interstitialButton;
     private Button rewardedButton;
 
+    //Ads
     private AdView adView;
     private InterstitialAd interstitialAd;
     private RewardedVideoAd rewardedVideoAd;
@@ -43,8 +48,14 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     private Boolean valInterstitial = false;
     private Boolean valRewarded= false;
 
+    //Banner visibility
     private Boolean adBannerVisibility = false;
 
+
+
+    //***********************************************************************************************************************
+    //ON CREATE
+    //***********************************************************************************************************************
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
 
 
 
-
     //***********************************************************************************************************************
     //REWARDED METHODS
     //***********************************************************************************************************************
@@ -231,12 +241,13 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
 
 
     //***********************************************************************************************************************
-    //BUTTONS
+    //ON CLICK BUTTONS
     //***********************************************************************************************************************
 
     //Click Banner Button
     public void onClickAdBanner(View view){
-        if(valBanner && adBannerVisibility){
+        //If the Ad is loaded AND the banner is hidden
+        if(valBanner && !adBannerVisibility){
             Toast.makeText(this, "adView Loaded", Toast.LENGTH_SHORT).show();
             adView.setVisibility(View.VISIBLE);
             adBannerVisibility = true;
@@ -251,8 +262,10 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
 
     //Click Interstitial Button
     public void onClickAdInterstitial(View view){
+        //If the Ad is loaded
         if(valInterstitial) {
             Toast.makeText(this, "InterstitialAd Loaded", Toast.LENGTH_SHORT).show();
+            //If the Ad is loaded (Double Validation)
             if (interstitialAd.isLoaded()) {
                 interstitialAd.show();
             } else {
@@ -264,8 +277,10 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
 
     //Click Rewarded Button
     public void onClickAdRewarded(View view){
+        //If the Ad is loaded
         if(valRewarded) {
             Toast.makeText(this, "RewardedVideoAd Loaded", Toast.LENGTH_SHORT).show();
+            //If the Ad is loaded (Double Validation)
             if (rewardedVideoAd.isLoaded()) {
                 rewardedVideoAd.show();
             }

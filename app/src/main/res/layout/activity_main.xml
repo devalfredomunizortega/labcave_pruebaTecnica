@@ -57,9 +57,9 @@
 
     <Button
         android:id="@+id/bannerButton"
-        android:background="@drawable/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/buttons"
         android:onClick="onClickAdBanner"
         android:text="@string/bannerButton"
         android:textColor="@android:color/background_light"
