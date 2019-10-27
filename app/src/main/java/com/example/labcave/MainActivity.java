@@ -1,5 +1,8 @@
 package com.example.labcave;
 
+import com.example.adslibrary.Utility;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,19 +17,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 
-public class MainActivity extends AppCompatActivity implements RewardedVideoAdListener{
+public class MainActivity extends AppCompatActivity{
 
     //***********************************************************************************************************************
     //DECLARATIONS
@@ -40,13 +39,8 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     //Ads
     private AdView adView;
     private InterstitialAd interstitialAd;
-    private RewardedVideoAd rewardedVideoAd;
-    private AdRequest adRequest;
-
-    //Load validation variables
-    private Boolean valBanner = false;
-    private Boolean valInterstitial = false;
-    private Boolean valRewarded= false;
+    private RewardedAdLoadCallback rewardedAdLoadCallback;
+    private RewardedAd rewardedAd;
 
     //Banner visibility
     private Boolean adBannerVisibility = false;
@@ -61,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Class Utility (Library: adsLibrary)
+        Utility utilityClass = new Utility();
 
         //Buttons
         bannerButton = findViewById(R.id.bannerButton);
@@ -78,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
         descriptionTextView.setText(description);
         descriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-
         //Instructions Alert Dialog
         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
         alertDialog.setTitle("Instrucciones");
@@ -92,150 +88,39 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
         alertDialog.show();
 
 
-        //ADS
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
-        });
-
+        //ADS--------
 
         //BANNER AD
         adView = findViewById(R.id.adBanner);
-        adRequest = new AdRequest.Builder().build();
-        adView.loadAd(new AdRequest.Builder().build());
-
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                valBanner = true;
-                bannerButton.setVisibility(View.VISIBLE); //Display button when Ad loads
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Log.d("TAG", "Failed to load.");
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                adView.loadAd(adRequest);
-            }
-        });
-
+        adView = utilityClass.bannerMethod(adView); //Method banner
 
         //INTERSTITIAL AD
         interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/8691691433");
-        interstitialAd.loadAd(new AdRequest.Builder().build());
-
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                valInterstitial = true;
-                interstitialButton.setVisibility(View.VISIBLE); //Display button when Ad loads
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                Log.d("TAG", "Failed to load.");
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when the ad is displayed.
-            }
-
-            @Override
-            public void onAdClicked() {
-                // Code to be executed when the user clicks on an ad.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                //Reload Interstitial Ad
-                interstitialAd.loadAd(new AdRequest.Builder().build());
-            }
-        });
-
+        interstitialAd = utilityClass.intersitialMethod(interstitialAd); //Method intersitial
 
         //REWARDED AD
-        MobileAds.initialize(this, "ca-app-pub-3940256099942544~3347511713");
-        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        rewardedVideoAd.setRewardedVideoAdListener(this);
-        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        rewardedAd =  new RewardedAd(this, "ca-app-pub-3940256099942544/5224354917");
+        rewardedAd = utilityClass.rewardedMethod(rewardedAd, rewardedButton);
 
-
-
+        //-----------
     }
 
 
 
     //***********************************************************************************************************************
-    //REWARDED METHODS
+    //ON START
     //***********************************************************************************************************************
 
     @Override
-    public void onRewardedVideoAdLoaded() {
-        valRewarded = true;
-        rewardedButton.setVisibility(View.VISIBLE); //Display button when Ad loads
-    }
+    public void onStart(){
+        super.onStart();
 
-    @Override
-    public void onRewardedVideoAdOpened() {
+        //Class Utility (Library: adsLibrary)
+        Utility utilityClass = new Utility();
 
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        //Reload Rewarded Video Ad
-        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-        Log.d("TAG", "Failed to load.");
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-        //Reload Rewarded Video Ad
-        rewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+        utilityClass.bannerLoadMethod(adView, bannerButton); //Banner Ad
+        utilityClass.intersitialLoadMethod(interstitialAd, interstitialButton); //Interstitial Ad
+        rewardedAdLoadCallback = utilityClass.getAdLoadCallback(); //Reward Ad
     }
 
 
@@ -247,9 +132,9 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
     //Click Banner Button
     public void onClickAdBanner(View view){
         //If the Ad is loaded AND the banner is hidden
-        if(valBanner && !adBannerVisibility){
-            Toast.makeText(this, "adView Loaded", Toast.LENGTH_SHORT).show();
+        if(!adBannerVisibility){
             adView.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "adView Loaded", Toast.LENGTH_SHORT).show();
             adBannerVisibility = true;
             bannerButton.setText("Ocultar");
         }else{
@@ -257,33 +142,45 @@ public class MainActivity extends AppCompatActivity implements RewardedVideoAdLi
             adBannerVisibility = false;
             bannerButton.setText("Banner");
         }
-
     }
 
     //Click Interstitial Button
     public void onClickAdInterstitial(View view){
         //If the Ad is loaded
-        if(valInterstitial) {
+        if (interstitialAd.isLoaded()) {
+            interstitialAd.show();
             Toast.makeText(this, "InterstitialAd Loaded", Toast.LENGTH_SHORT).show();
-            //If the Ad is loaded (Double Validation)
-            if (interstitialAd.isLoaded()) {
-                interstitialAd.show();
-            } else {
-                Log.d("TAG", "The interstitial wasn't loaded yet.");
-            }
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
         }
     }
-
 
     //Click Rewarded Button
     public void onClickAdRewarded(View view){
         //If the Ad is loaded
-        if(valRewarded) {
+        if (rewardedAd.isLoaded()) {
+            RewardedAdCallback adCallback = new RewardedAdCallback() {
+
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    // User earned reward.
+                }
+
+                public void onRewardedAdOpened() {
+                    // Ad opened.
+                }
+
+                public void onRewardedAdClosed() {
+                    // As closed.
+                }
+
+                public void onRewardedAdFailedToShow(int errorCode) {
+                    // Ad failed to display
+                }
+            };
+            rewardedAd.show(this, adCallback);
             Toast.makeText(this, "RewardedVideoAd Loaded", Toast.LENGTH_SHORT).show();
-            //If the Ad is loaded (Double Validation)
-            if (rewardedVideoAd.isLoaded()) {
-                rewardedVideoAd.show();
-            }
+        } else {
+            Log.d("TAG", "The rewarded ad wasn't loaded yet.");
         }
     }
 }
